@@ -183,6 +183,7 @@ export default class Index extends Component<{}, PageFormState> {
                     mode='date'
                     onChange={this.onDateChange.bind(this)}
                     value=''
+                    start='1900-01-01'
                     end={this.getNowFormatDay()}
                   >
                     <AtList hasBorder={false}>
