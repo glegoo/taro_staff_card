@@ -7,7 +7,7 @@ export interface PageFormState {
   name: string
   id: string
   sex: number
-  company: string
+  company: number
   birthday: string
   imgs: { url: string }[]
   [key: string]: string | number
@@ -25,6 +25,8 @@ export default class Index extends Component<{}, PageFormState> {
 
   componentDidHide() { }
 
+  classes = ['请选择身份', '管理', '工勤', '医师', '护士', '药师', '技师']
+
   public config: Taro.PageConfig = {
     navigationBarTitleText: '电子员工证'
   }
@@ -36,7 +38,7 @@ export default class Index extends Component<{}, PageFormState> {
       id: '',
       sex: 0,
       birthday: '',
-      company: '',
+      company: 0,
       imgs: []
     }
   }
@@ -67,12 +69,12 @@ export default class Index extends Component<{}, PageFormState> {
       })
     } else if (!birthday) {
       Taro.showToast({
-        title: '请填写出生日期',
+        title: '请选择出生日期',
         icon: 'none'
       })
-    } else if (!company) {
+    } else if (company == 0) {
       Taro.showToast({
-        title: '请填写公司名称',
+        title: '请选择身份类别',
         icon: 'none'
       })
     } else if (files.length === 0) {
@@ -85,7 +87,7 @@ export default class Index extends Component<{}, PageFormState> {
         name,
         id,
         birthday,
-        company,
+        company: this.classes[company],
         sex: sex === 0 ? '男' : '女',
         photo: files[0].url
       }
@@ -100,6 +102,12 @@ export default class Index extends Component<{}, PageFormState> {
     console.log(e)
     this.setState({
       birthday: e.detail.value
+    })
+  }
+
+  private handleClassChange(e) {
+    this.setState({
+      company: e.detail.value
     })
   }
 
@@ -157,28 +165,20 @@ export default class Index extends Component<{}, PageFormState> {
                   </Picker>
                   <AtInput
                     name='id'
-                    title='员工编号'
+                    title='编号'
                     type='text'
                     placeholder='请输入员工编号'
                     value={this.state.id}
                     onChange={this.handleChange.bind(this, 'id')}
                   />
-                  <AtInput
-                    name='company'
-                    title='公司'
-                    type='text'
-                    placeholder='请输入公司名称'
-                    value={this.state.company}
-                    onChange={this.handleChange.bind(this, 'company')}
-                  />
-                  {/* <AtCheckbox
-                    options={[
-                      { label: 'iPhone X', value: 'iPhone X' },
-                      { label: 'HUAWEI P20', value: 'HUAWEI P20' }
-                    ]}
-                    selectedList={this.state.value3}
-                    onChange={this.handleChange.bind(this, 'value3')}
-                  /> */}
+                  <Picker mode='selector' range={this.classes} onChange={this.handleClassChange.bind(this)} value={this.state.company}>
+                    <AtList hasBorder={false}>
+                      <AtListItem
+                        title='身份类别'
+                        extraText={this.classes[this.state.company]}
+                      />
+                    </AtList>
+                  </Picker>
                   <Picker
                     mode='date'
                     onChange={this.onDateChange.bind(this)}

@@ -27,19 +27,19 @@ export default class Page extends Component<{}, { info }> {
         <Image className='photo' src={photo} mode='aspectFill' />
         <View className='table'>
           {
-            this.row('姓名：', name)
+            this.row('姓　　名：', name)
           }
           {
-            this.row('编号：', id)
+            this.row('性　　别：', sex)
           }
           {
-            this.row('性别：', sex)
+            this.row('出生年月：', birthday)
           }
           {
-            this.row('生日：', birthday)
+            this.row('身份类别：', company)
           }
           {
-            this.row('公司：', company)
+            this.row('编　　号：', id)
           }
         </View>
       </View>
